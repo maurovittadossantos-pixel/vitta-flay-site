@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-ink-900 antialiased;
+}
+
+.grid-backdrop {
+  background-image: linear-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.glow-ring {
+  background: radial-gradient(60% 60% at 50% 0%, rgba(99, 102, 241, 0.35) 0%, rgba(236, 72, 153, 0.15) 45%, transparent 75%);
+}

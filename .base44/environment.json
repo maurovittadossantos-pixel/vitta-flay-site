@@ -1,0 +1,19 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "SESSION_SECRET",
+      "description": "Signs the login session cookie. A development placeholder has been generated; replace it with any long random string in the app's Secrets page for real deployments.",
+      "requiredAtBoot": true,
+      "generatedForDevelopment": true
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "description": "Optional. Enables the AI copywriting pass that writes bespoke marketing text for each generated site. Get one at https://platform.openai.com/api-keys. Without it, Vita Fly Sites still generates complete websites using its built-in industry copywriting engine.",
+      "requiredAtBoot": false,
+      "generatedForDevelopment": false
+    }
+  ]
+}
