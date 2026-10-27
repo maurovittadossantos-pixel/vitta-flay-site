@@ -15,14 +15,17 @@ Service roles:
 
 - `db` — PostgreSQL 16, data in the `db_data` volume. Credentials are local development values
   written inline in the compose file (not user secrets).
-- `deps` — one-shot `npm ci` into the `app_node_modules` volume, run after the bind mount is
-  available. `web` and `migrate` wait for it. After adding a dependency, re-run it:
-  `docker compose -f docker-compose.base44.yml run --rm deps`.
-- `web` — `next dev` from the bind-mounted source (live reload). Runs as `node:20`; the sandbox
-  host has no Node runtime, so run every script with
-  `docker compose -f docker-compose.base44.yml exec -T web <command>`.
-- `migrate` — one-shot `node scripts/migrate.mjs`, applies `db/schema.sql` (idempotent). The app
-  returns errors on every DB-backed page until it has completed at least once.
+- `web` — the only application service. It runs `npm ci` (dependencies into the
+  `app_node_modules` volume), then `node scripts/migrate.mjs` (applies `db/schema.sql`,
+  idempotent), then `exec npm run dev` from the bind-mounted source (live reload). Both setup
+  steps run in the container entrypoint instead of separate one-shot services so the stack never
+  leaves a service in an exited state, which the sandbox health check reports as a failure. To
+  re-run them by hand:
+  `docker compose -f docker-compose.base44.yml exec -T web npm ci --no-audit --no-fund` and
+  `docker compose -f docker-compose.base44.yml exec -T web node scripts/migrate.mjs`.
+  It runs as `node:20`; the sandbox host has no Node runtime, so run every script with
+  `docker compose -f docker-compose.base44.yml exec -T web <command>`. A dependency change needs
+  `docker compose -f docker-compose.base44.yml up -d` (or a `web` restart) so `npm ci` re-runs.
 
 ## Environment
 
