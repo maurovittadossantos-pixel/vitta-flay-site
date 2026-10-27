@@ -35,8 +35,11 @@ Service roles:
 - `OPENAI_API_KEY` is optional: when present, `lib/ai.ts` asks the model to rewrite the headline,
   subheadline, about and CTA copy. Without it the built-in catalog in `lib/catalog.ts` supplies
   the copy, so generation always returns a complete site.
-- `BASE44_PREVIEW_MODE` is passed through from the platform and is read only by
-  `next.config.mjs`-adjacent sandbox wiring; app behaviour is unchanged when it is unset.
+- `BASE44_PREVIEW_MODE` is passed through from the platform for sandbox wiring. Nothing in the
+  app or its config reads it today: Next 14.2 has no `allowedDevOrigins` option and the dev server
+  already serves dev assets to the proxied preview host and origin (verified with the proxied
+  `Host`/`Origin` headers), so no sandbox-only override is required. App behaviour is unchanged
+  whether the flag is set or unset.
 
 ## How it fits together
 
